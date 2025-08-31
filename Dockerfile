@@ -15,7 +15,7 @@ COPY package.json package-lock.json src/*.js ./
 RUN npm ci --production
 
 # Expose the port the app runs in
-EXPOSE 4000
+EXPOSE 4400
 
 # Serve the app
 CMD ["node", "index.js"]
