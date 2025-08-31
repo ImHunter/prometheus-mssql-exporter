@@ -20,10 +20,11 @@ let config = {
       },
     },
     options: {
-      port: parseInt(process.env["PORT"]) || 1433,
+      port: process.env["PORT"] !== undefined ? parseInt(process.env["PORT"]) : undefined,
       encrypt: process.env["ENCRYPT"] !== undefined ? process.env["ENCRYPT"] === "true" : true,
       trustServerCertificate: process.env["TRUST_SERVER_CERTIFICATE"] !== undefined ? process.env["TRUST_SERVER_CERTIFICATE"] === "true" : true,
       rowCollectionOnRequestCompletion: true,
+      instanceName: process.env["INSTANCE_NAME"] !== undefined ? process.env["INSTANCE_NAME"] : undefined
     },
   },
   port: parseInt(process.env["EXPOSE"]) || 4000,
