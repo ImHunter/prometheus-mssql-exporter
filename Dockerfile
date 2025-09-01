@@ -13,7 +13,7 @@ COPY package.json package-lock.json src/*.js ./
 
 # Install dependencies
 RUN npm config set strictSSL false \
-    && npm ci --production
+    && npm install
 
 # Expose the port the app runs in
 EXPOSE 4000
