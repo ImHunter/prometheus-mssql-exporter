@@ -12,7 +12,8 @@ WORKDIR /usr/src/app
 COPY package.json package-lock.json src/*.js ./
 
 # Install dependencies
-RUN npm ci --production
+RUN npm config set strictSSL false \
+    npm ci --production
 
 # Expose the port the app runs in
 EXPOSE 4000
