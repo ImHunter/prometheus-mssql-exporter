@@ -5,6 +5,7 @@
 const metricsLog = require("debug")("metrics");
 const client = require("prom-client");
 const { productVersionParse } = require("./utils");
+const gl_mssql_product_major_version=0;
 
 const mssql_up = {
   metrics: {
@@ -28,6 +29,7 @@ const mssql_product_version = {
   collect: (rows, metrics) => {
     let v = productVersionParse(rows[0][0].value);
     const mssql_product_version = v.major + "." + v.minor;
+    let gl_mssql_product_major_version=parseInt(v.major);
     metricsLog("Fetched version of instance", mssql_product_version);
     metrics.mssql_product_version.set(mssql_product_version);
   },
@@ -272,9 +274,10 @@ const mssql_io_stall = {
 cast(DB_Name(a.database_id) as varchar) as name,
     max(io_stall_read_ms),
     max(io_stall_write_ms),
-    max(io_stall),
+    max(io_stall),` + (gl_mssql_product_major_version>11 ? ` 
     max(io_stall_queued_read_ms),
-    max(io_stall_queued_write_ms)
+    max(io_stall_queued_write_ms)` : `
+    0, 0`) + `
 FROM
 sys.dm_io_virtual_file_stats(null, null) a
 INNER JOIN sys.master_files b ON a.database_id = b.database_id and a.file_id = b.file_id
